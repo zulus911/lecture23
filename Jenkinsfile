@@ -1,5 +1,5 @@
-def appName = ""
-def appVersion = ""
+def appName = "my-app"
+def appVersion = "1.0-SNAPSHOT"
 
 
 node('dockerAgent'){
@@ -17,8 +17,8 @@ node('dockerAgent'){
     stage('Build'){
         withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
             sh 'mvn -B -DskipTests clean package'
-            appName = sh(script: 'mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.name', returnStdout: true).trim()
-            appVersion = sh(script: "mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version", returnStdout: true).trim()
+//            appName = sh(script: 'mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.name', returnStdout: true).trim()
+//            appVersion = sh(script: "mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version", returnStdout: true).trim()
         }        
     }
     stage('Test'){
