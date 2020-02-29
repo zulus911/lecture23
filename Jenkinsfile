@@ -44,6 +44,8 @@ node('dockerAgent1'){
         unstash 'artifactStash'
     }
     stage('Buiuld our Docker'){
-        sh "docker build -t myappdocker ."
+        withEnv(["PATH=${env.PATH}:${tool name: 'docker-latest'}/bin"]){        
+            sh "docker build -e APP_NAME=${appName} -e APP_VERSION=${appVersion} -t myappdocker ."
+        }
     }
 }
