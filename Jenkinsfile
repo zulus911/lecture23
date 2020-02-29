@@ -17,8 +17,8 @@ node('dockerAgent'){
     stage('Build'){
         withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
             sh 'mvn -B -DskipTests clean package'
-            appName = sh(script: "mvn help:evaluate -Dexpression=project.name | grep -e -v \"^[\"", returnStdout: true).trim()
-            appVersion = sh(script: "mvn help:evaluate -Dexpression=project.version | grep -e -v \"^[\"", returnStdout: true).trim()
+            appName = sh(script: "mvn help:evaluate -Dexpression=project.name | grep -v \"[\"", returnStdout: true).trim()
+            appVersion = sh(script: "mvn help:evaluate -Dexpression=project.version | grep -v \"[\"", returnStdout: true).trim()
         }        
     }
     stage('Test'){
