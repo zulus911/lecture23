@@ -37,11 +37,13 @@ node('dockerAgent1'){
             sh 'docker -v'
         } 
     }
+    stage('Get Dockerfile'){
+        git(url: 'git@github.com:zulus911/lecture23.git', branch: "master", credentialsId: 'git')
+    }
     stage('unstash our application'){
         unstash 'artifactStash'
     }
-    stage('Get Dockerfile'){
-        echo appName
-        echo appVersion
+    stage('Buiuld our Docker'){
+        sh "docker build -t myappdocker ."
     }
 }
