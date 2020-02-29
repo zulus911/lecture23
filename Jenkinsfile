@@ -1,8 +1,7 @@
 
 node('dockerAgent'){
+    tool name: 'maven', type: 'maven'
     stage('Check prerequests'){
-        withMaven(maven: 'maven'){
-            sh 'mvn -v'
-        }
+        sh 'mvn -v'
     }
 }
