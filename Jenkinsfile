@@ -12,16 +12,16 @@ node('dockerAgent'){
         }
     }
     stage('Get sources'){
-        git(url: 'git@uni.ssny.us:civicom-downstream/emblem.git', branch: "master", credentialsId: 'git')
+        git(url: 'git@uni.ssny.us:civicom-downstream/emblem.git', branch: "develop", credentialsId: 'git')
     }
     stage('Build'){
         withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
-            sh 'mvn -B -DskipTests clean package'
+            sh 'cd emblem && mvn -B -DskipTests clean package'
         }        
     }
     stage('Test'){
         withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
-            sh 'mvn test'
+            sh 'cd emblem && mvn test'
         }        
     }
 }
