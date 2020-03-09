@@ -1,6 +1,3 @@
-def appName = "my-app"
-def appVersion = "1.0-SNAPSHOT"
-
 
 node('dockerAgent'){
     tool name: 'maven', type: 'maven'
@@ -16,12 +13,12 @@ node('dockerAgent'){
     }
     stage('Build'){
         withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
-            sh 'cd emblem && mvn -B -DskipTests clean package'
+            sh 'cd dana && mvn -B -DskipTests clean package'
         }        
     }
     stage('Test'){
         withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
-            sh 'cd emblem && mvn test'
+            sh 'cd dana && mvn test'
         }        
     }
 }
