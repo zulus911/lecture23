@@ -12,8 +12,10 @@ node('dockerAgent'){
         git(url: 'git@uni.ssny.us:civicom-downstream/dana.git', branch: "develop", credentialsId: 'git')
     }
     stage('Build'){
-        withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
-            sh 'cd dana && mvn -B -DskipTests clean package'
+        withCredentials([file(credentialsId: 'settings', variable: 'SETTINGS')]) {
+            withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+                sh 'cd dana && mvn -s $SETTINGS -B -DskipTests clean package'
+            }
         }        
     }
     stage('Test'){
