@@ -9,7 +9,7 @@ node('dockerAgent'){
         }
     }
     stage('Get sources'){
-        git(url: 'git@uni.ssny.us:civicom-downstream/dana.git', branch: "master", credentialsId: 'git')
+        git(url: 'git@uni.ssny.us:civicom-downstream/dana.git', branch: "test-jenkins", credentialsId: 'git')
     }
     stage('Build dana-model'){
         withCredentials([file(credentialsId: 'settings', variable: 'SETTINGS')]) {
