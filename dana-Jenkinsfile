@@ -18,7 +18,7 @@ node('dockerAgent'){
             }
         }        
     }
-    stage('Build dana-model'){
+    stage('Build dana-processor'){
         withCredentials([file(credentialsId: 'settings', variable: 'SETTINGS')]) {
             withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
                 sh "cd dana-pocessor && mvn -s $SETTINGS -B -DskipTests clean package install"
