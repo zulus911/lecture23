@@ -21,6 +21,7 @@ node('dockerAgent'){
     stage('Build dana-processor'){
         withCredentials([file(credentialsId: 'settings', variable: 'SETTINGS')]) {
             withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+                sh "ls /home/jenkins/.m2/repository/com/dialanote/dana-model/3.46.1"
                 sh "cd dana-processor && mvn -s $SETTINGS -B -DskipTests -Dmaven.repo.local=$HOME/.m2/repository clean install"
             }
         }        
