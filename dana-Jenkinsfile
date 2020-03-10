@@ -14,14 +14,14 @@ node('dockerAgent'){
     stage('Build dana-model'){
         withCredentials([file(credentialsId: 'settings', variable: 'SETTINGS')]) {
             withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
-                sh "cd dana/dana-model && mvn -s $SETTINGS -B -DskipTests clean package install"
+                sh "cd dana/dana-model && mvn -s $SETTINGS -B -DskipTests clean install"
             }
         }        
     }
     stage('Build dana-processor'){
         withCredentials([file(credentialsId: 'settings', variable: 'SETTINGS')]) {
             withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
-                sh "cd dana-processor && mvn -s $SETTINGS -B -DskipTests clean package install"
+                sh "cd dana-processor && mvn -s $SETTINGS -B -DskipTests clean install"
             }
         }        
     }
