@@ -9,13 +9,13 @@ node('dockerAgent'){
         }
     }
     stage('Get sources'){
-        git(url: 'git@uni.ssny.us:civicom-downstream/dana.git', branch: "develop", credentialsId: 'git')
+        git(url: 'git@uni.ssny.us:civicom-downstream/dana.git', branch: "master", credentialsId: 'git')
     }
     stage('Build'){
         withCredentials([file(credentialsId: 'settings', variable: 'SETTINGS')]) {
             withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
-                sh "cd dana/dana-model && mvn -s $SETTINGS -B -DskipTests clean package"
-                sh "cd dana-processor && mvn -s $SETTINGS -B -DskipTests clean package"
+                sh "cd dana/dana-model && mvn -s $SETTINGS -B -DskipTests clean package install"
+                sh "cd dana-processor && mvn -s $SETTINGS -B -DskipTests clean package install"
             }
         }        
     }
