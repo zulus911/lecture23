@@ -33,7 +33,7 @@ podTemplate(cloud: 'kubernetes', containers: [
         stage('Build dana-model'){
             withCredentials([file(credentialsId: 'settings', variable: 'SETTINGS')]) {
                 withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
-                    sh "cd dana/dana-model && mvn -s $SETTINGS -B -DskipTests -Dmaven.repo.local=$HOME/.m2/repository clean install"
+                    sh "cd dana/ && mvn -s $SETTINGS -B -DskipTests -Dmaven.repo.local=$HOME/.m2/repository clean install"
                 }
             }        
         }
