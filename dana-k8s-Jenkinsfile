@@ -1,0 +1,55 @@
+
+podTemplate(cloud: 'kubernetes', containers: [
+    containerTemplate(
+        name: 'jnlp',
+        image: 'stan09081983/jenkinsslave:0.0.8',
+        ttyEnabled: true,
+        privileged: false,
+        alwaysPullImage: false,
+        workingDir: '/home/jenkins/agent',
+        resourceRequestCpu: '1000m',
+        resourceLimitCpu: '1500m',
+        resourceRequestMemory: '512Mi',
+        resourceLimitMemory: '1024Mi',
+        envVars: [
+            envVar(key: 'JENKINS_URL', value: 'http://jenkins.jenkins.svc.cluster.local:8080'),
+        ]
+    ),
+]
+)
+    {
+        node(POD_LABEL){
+        tool name: 'maven', type: 'maven'
+        stage('Check prerequests'){
+            withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+                sh 'env | grep PATH'
+    //          echo "${tool 'maven'}"
+                sh 'mvn -v'
+            }
+        }
+        stage('Get sources'){
+            git(url: 'git@uni.ssny.us:civicom-downstream/dana.git', branch: "test-jenkins", credentialsId: 'git')
+        }
+        stage('Build dana-model'){
+            withCredentials([file(credentialsId: 'settings', variable: 'SETTINGS')]) {
+                withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+                    sh "cd dana/dana-model && mvn -s $SETTINGS -B -DskipTests -Dmaven.repo.local=$HOME/.m2/repository clean install"
+                }
+            }        
+        }
+        stage('Build dana-processor'){
+            withCredentials([file(credentialsId: 'settings', variable: 'SETTINGS')]) {
+                withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+                    sh "ls /home/jenkins/.m2/repository/com/dialanote/dana-model/3.46.1"
+                    sh "cd dana-processor && mvn -s $SETTINGS -B -DskipTests -Dmaven.repo.local=$HOME/.m2/repository clean install"
+                }
+            }        
+        }
+
+        stage('Test'){
+            withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+                sh 'cd dana-processor && mvn test'
+            }        
+        }
+    }
+}
