@@ -7,10 +7,10 @@ podTemplate(cloud: 'kubernetes', containers: [
         privileged: false,
         alwaysPullImage: false,
         workingDir: '/home/jenkins/agent',
-        resourceRequestCpu: '1000m',
-        resourceLimitCpu: '1500m',
+        resourceRequestCpu: '1900m',
+        resourceLimitCpu: '2',
         resourceRequestMemory: '512Mi',
-        resourceLimitMemory: '1024Mi',
+        resourceLimitMemory: '6000Mi',
         envVars: [
             envVar(key: 'JENKINS_URL', value: 'http://jenkins.jenkins.svc.cluster.local:8080'),
         ]
